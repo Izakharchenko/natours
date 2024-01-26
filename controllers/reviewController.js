@@ -4,7 +4,9 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.getAllReviews = catchAsync(async (req, res, next) => {
-  const features = new APIfeatures(Review.find(), req.query).paginate();
+  let filter = {};
+  if (req.params.tourId) filter = { tour: req.params.tourId };
+  const features = new APIfeatures(Review.find(filter), req.query).paginate();
 
   const reviews = await features.query;
 
